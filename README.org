@@ -76,9 +76,10 @@ $ sbcl
   * (ql:quickload "astra-lambda")
 #+END_SRC
 
-** TODO
+** Project TODO
 - [ ] make a list with coordinates of common astronomical objects
 - [ ] add functions for orbital mechanics (though maybe this would be better fit as another project?)
+- [ ] get rid of the download-catalog-ffi and translate it to LISP completely
 
 ** Author
 
