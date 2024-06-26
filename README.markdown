@@ -1,0 +1,70 @@
+# Astra-Lambda - a system for astronomical calculations and catalog data evaluation
+AstraLambda is a Common Lisp System for loading and analyzing GAIA DRX catalog data. 
+The Catalog data can be acquired by exporting it from "Aladin" by selecting the downloaded plane, then clicking File → Export Planes. 
+This system works with the TSV and CSV formatting. 
+Also you can download the data directly from within the system by using the TAP-URL: https://gea.esac.esa.int/tap-server/tap/
+
+## Usage
+Load the astra-lambda module into your LISP implementation which gives you access to the following features:
+
+Constant variables:
+```
++AU+ ;; 1 astronomical unit in meters
++LY+ ;; 1 light year in meters
+*PC+ ;; 1 parsec in meters
+*c*  ;; the speed of light in meters per second
+```
+
+Equation Functions:
+```
+(dist-pc-from-parallax-mas milliarcsec)                    ;; calculates the distance in parsecs based on the given parallax in milliarcseconds (radians)
+(dist-pc-from-parallax-as arcsec)                          ;; calculates the distance in parsecs based on the given parallax in arcseconds (radians)
+(emission-max-wavelength temperature)                      ;; calculates the wavelength of the emissive maximum of a black body in µm from temperature in Kelvin
+(magnitude-from-flux magnitude-control flux-1 flux-2)      ;; calculates the magnitude of a star from its relative flux to a control star with known magnitude
+(color-index magnitude-blue magnitude-red)                 ;; calculates the color index of a star from blue and red channel instrument; higher means red
+```
+
+Conversion Functions:
+```
+(parsec-to-lightyears parsecs)                             ;; converts a distance from parsecs to light years
+(degrees-to-radians degree)                                ;; converts degrees to radians
+(radians-to-degrees radians)                               ;; converts radians to degrees
+(kelvin-to-celsius temperature)                            ;; converts kelvin to celsius
+(celsius-to-kelvin temperature)                            ;; converts celsius to kelvin
+(right-ascension-to-decimal-degrees hours minutes seconds) ;; converts right ascension into decimal degrees. seconds may be used with decimal point
+(declination-to-decimal-degrees degree minutes seconds)    ;; converts declination into decimal degrees. seconds may be used with decimal point
+(convert-list-data-to-numbers input-list)                  ;; converts a list of catalog data from strings to numeric values
+```
+
+Catalog Management:
+```
+(download-catalog tap-url rectacension declination radius export-format output-filename) ;; fetches catalog data from given parameters and saves it to a specified file
+(load-catalog-from-file filename)                                                        ;; loads catalog data from an aladin export file with csv or tsv extension and returns a list of the catalog data
+(get-catalog-architecture catalog)                                                       ;; returns number of columns and rows as well as data field titles
+(get-catalog-data-from-field catalog field-name &optional selection)                     ;; returns a list of data from the specified catalog and corresponding data field in strings. optionally a selection can be specified to narrow down the output.
+(isolate-data x-values y-values &key x-minimum x-maximum y-minimum y-maximum)            ;; isolates the area specified by the minima and maxima for their respective axis and returns a list each for x and y values
+(select-data x-values y-values &key x-minimum x-maximum y-minimum y-maximum)             ;; creates a selection list of the specified area to be used with a catalog
+```
+## Installation
+Clone this repository to your quicklisp installation folder and load it via (ql:quickload "astra-lambda")
+
+```
+$ cd ~/.quicklisp/local-projects/                        # change this one, if you set the quicklisp installation to a different path
+$ git clone https://github.com/dw0xaa55/astra-lambda
+$ sbcl
+  * (ql:quickload "astra-lambda")
+```
+
+## Author
+
+* C. Huffenbach (nphard1234@gmail.com)
+
+## Disclaimer:
+
+I am a hobbyist programmer who likes playing around with computer languages and astronomy, so do not expect either elegant nor efficient code. 
+Also there may be bugs. The equations should be correct  though. That being said, feel free to modify the code base to your liking and have fun using it :>
+~Happy Hacking 
+
+## Copyright
+
+Copyright (c) 2024 C. Huffenbach (nphard1234@gmail.com)
