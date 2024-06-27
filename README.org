@@ -68,10 +68,13 @@ Catalog Management:
 
 ** Installation
 Clone this repository to your quicklisp installation folder and load it via (ql:quickload "astra-lambda")
+Just to be on the save side, go into the src/libcatload folder and rebuild the library.
 
 #+BEGIN_SRC bash
 $ cd ~/.quicklisp/local-projects/                        # change this one, if you set the quicklisp installation to a different path
 $ git clone https://github.com/dw0xaa55/astra-lambda
+$ cd astra-lambda/src/libcatload
+$ make
 $ sbcl
   * (ql:quickload "astra-lambda")
 #+END_SRC

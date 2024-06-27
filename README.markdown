@@ -46,11 +46,14 @@ Catalog Management:
 (select-data x-values y-values &key x-minimum x-maximum y-minimum y-maximum)             ;; creates a selection list of the specified area to be used with a catalog
 ```
 ## Installation
-Clone this repository to your quicklisp installation folder and load it via (ql:quickload "astra-lambda")
+Clone this repository to your quicklisp installation folder and load it via (ql:quickload "astra-lambda").
+Just to be on the save side, go into the src/libcatload folder and rebuild the library.
 
 ```
 $ cd ~/.quicklisp/local-projects/                        # change this one, if you set the quicklisp installation to a different path
 $ git clone https://github.com/dw0xaa55/astra-lambda
+$ cd astra-lambda/src/libcatload
+$ make
 $ sbcl
   * (ql:quickload "astra-lambda")
 ```
