@@ -11,8 +11,8 @@ Constant variables:
 ```
 +AU+ ;; 1 astronomical unit in meters
 +LY+ ;; 1 light year in meters
-*PC+ ;; 1 parsec in meters
-*c*  ;; the speed of light in meters per second
++PC+ ;; 1 parsec in meters
++c+  ;; the speed of light in meters per second
 ```
 
 Equation Functions:
