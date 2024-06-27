@@ -8,7 +8,7 @@ Also you can download the data directly from within the system by using the TAP-
 Load the astra-lambda module into your LISP implementation which gives you access to the following features:
 
 Constant variables:
-```
+```lisp
 +AU+ ;; 1 astronomical unit in meters
 +LY+ ;; 1 light year in meters
 +PC+ ;; 1 parsec in meters
@@ -16,7 +16,7 @@ Constant variables:
 ```
 
 Equation Functions:
-```
+```lisp
 (dist-pc-from-parallax-mas milliarcsec)                    ;; calculates the distance in parsecs based on the given parallax in milliarcseconds (radians)
 (dist-pc-from-parallax-as arcsec)                          ;; calculates the distance in parsecs based on the given parallax in arcseconds (radians)
 (emission-max-wavelength temperature)                      ;; calculates the wavelength of the emissive maximum of a black body in µm from temperature in Kelvin
@@ -25,7 +25,7 @@ Equation Functions:
 ```
 
 Conversion Functions:
-```
+```lisp
 (parsec-to-lightyears parsecs)                             ;; converts a distance from parsecs to light years
 (degrees-to-radians degree)                                ;; converts degrees to radians
 (radians-to-degrees radians)                               ;; converts radians to degrees
@@ -37,7 +37,7 @@ Conversion Functions:
 ```
 
 Catalog Management:
-```
+```lisp
 (download-catalog tap-url rectacension declination radius export-format output-filename) ;; fetches catalog data from given parameters and saves it to a specified file
 (load-catalog-from-file filename)                                                        ;; loads catalog data from an aladin export file with csv or tsv extension and returns a list of the catalog data
 (get-catalog-architecture catalog)                                                       ;; returns number of columns and rows as well as data field titles
@@ -49,7 +49,7 @@ Catalog Management:
 Clone this repository to your quicklisp installation folder and load it via (ql:quickload "astra-lambda").
 Just to be on the save side, go into the src/libcatload folder and rebuild the library.
 
-```
+```lisp
 $ cd ~/.quicklisp/local-projects/                        # change this one, if you set the quicklisp installation to a different path
 $ git clone https://github.com/dw0xaa55/astra-lambda
 $ cd astra-lambda/src/libcatload
