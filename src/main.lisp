@@ -163,27 +163,3 @@
 		  (push nil selection)))
 	    x-values y-values)
     selection))
-
-;;;-------------------------------------------------------------------------------------------------
-;;; visualization                                                                  -=(maybe ditch)=-
-;;;-------------------------------------------------------------------------------------------------
-
-(defparameter clgp:*gnuplot-path* "gnuplot")
-(defparameter clgp:*tmp-dat-file* "~/.quicklisp/local-projects/astra-lambda/.tmp/clgplot-tmp.dat")
-(defparameter clgp:*tmp-gp-file*  "~/.quicklisp/local-projects/astra-lambda/.tmp/clgplot-tmp.gp")
-
-(defun plot-point-cloud-from-data (x-lists y-lists &key titles label-x-axis label-y-axis flip-x-axis flip-y-axis x-range y-range)
-  "creates a plot of one or more x and y value lists"
-  (clgp:plots y-lists :x-seqs x-lists
-		      :style 'points :title-list titles :x-label label-x-axis :y-label label-y-axis
-		      :x-range-reverse flip-x-axis :y-range-reverse flip-y-axis
-		      :x-range x-range :y-range y-range))
-
-(defun save-point-cloud-plot-from-data (x-lists y-lists filename &key titles label-x-axis label-y-axis flip-x-axis flip-y-axis x-range y-range)
-  "saves the plot of the given x and y values to a png image"
-  (clgp:plots y-lists :x-seqs x-lists
-		      :style 'points :title-list titles :x-label label-x-axis :y-label label-y-axis
-		      :x-range-reverse flip-x-axis :y-range-reverse flip-y-axis
-		      :x-range x-range :y-range y-range
-		      :output filename))
-
