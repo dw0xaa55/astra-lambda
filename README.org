@@ -85,14 +85,9 @@ $ sbcl
 - [ ] get rid of the download-catalog-ffi and translate it to LISP completely
 
 ** Author
-
-+ C. Huffenbach (nphard1234@gmail.com)
++ C. Huffenbach
 
 ** Disclaimer
 I am a hobbyist programmer who likes playing around with computer languages and astronomy, so do not expect either elegant nor efficient code. 
 Also there may be bugs. The equations should be correct  though. That being said, feel free to modify the code base to your liking and have fun using it :>
 ~Happy Hacking 
-
-** Copyright
-
-Copyright (c) 2024 C. Huffenbach (nphard1234@gmail.com)
