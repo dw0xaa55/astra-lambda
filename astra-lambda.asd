@@ -7,5 +7,5 @@
 	       #:cl-ppcre)
   :components ((:file "src/package")
 	       (:file "src/main"))
-:description "a system for astronomical calculations and catalog data evaluation"
-  :in-order-to ((test-op (test-op "astra-lambda/tests"))))
+:description "a system for astronomical calculations and catalog data evaluation")
+
