@@ -39,6 +39,7 @@ Conversion Functions:
 Catalog Management:
 #+BEGIN_SRC common-lisp
   (download-catalog tap-url
+                    catalog-release
                     rectacension
                     declination
                     radius
