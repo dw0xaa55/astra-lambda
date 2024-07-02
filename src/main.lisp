@@ -97,7 +97,7 @@
 (defun download-catalog (tap-url catalog-release rectacension declination radius export-format output-filename)
   "fetches catalog data from given parameters and saves it to a specified file"
   (let ((download-link (format nil "~async?REQUEST=doQuery&LANG=ADQL&FORMAT=~a&QUERY=SELECT+*+FROM+~a.gaia_source+WHERE+1+=+CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',~a,~a,~a))+AND+phot_g_mean_mag+<+22.0" 
-			       tap-url catalog-release export-format rectacension declination radius)))
+			       tap-url export-format catalog-release rectacension declination radius)))
     (format t "Downloading Catalog ... ")
     (download-catalog-ffi download-link output-filename))
   (format t "[DONE]~%"))
