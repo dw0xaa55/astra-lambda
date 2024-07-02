@@ -87,16 +87,17 @@
 
 ;; Example inputs for the function: download-catalog
 ;; 
-;; tap-url :: https://gea.esac.esa.int/tap-server/tap/
-;; rectacension ::  245.9
-;; declination  :: -26.5
-;; radius       ::  0.15
-;; format       ::  csv
-;; query        :: SELECT * FROM gaiadr2.gaia_source WHERE 1 = CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',245.89675,-26.52575,0.5)) AND phot_g_mean_mag < 22.0
-(defun download-catalog (tap-url rectacension declination radius export-format output-filename)
+;; tap-url         :: https://gea.esac.esa.int/tap-server/tap/
+;; catalog-release :: gaiadr2
+;; rectacension    ::  245.9
+;; declination     :: -26.5
+;; radius          ::  0.15
+;; format          ::  csv
+;; query           :: SELECT * FROM gaiadr2.gaia_source WHERE 1 = CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',245.89675,-26.52575,0.5)) AND phot_g_mean_mag < 22.0
+(defun download-catalog (tap-url catalog-release rectacension declination radius export-format output-filename)
   "fetches catalog data from given parameters and saves it to a specified file"
-  (let ((download-link (format nil "~async?REQUEST=doQuery&LANG=ADQL&FORMAT=~a&QUERY=SELECT+*+FROM+gaiadr3.gaia_source+WHERE+1+=+CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',~a,~a,~a))+AND+phot_g_mean_mag+<+22.0" 
-			       tap-url export-format rectacension declination radius)))
+  (let ((download-link (format nil "~async?REQUEST=doQuery&LANG=ADQL&FORMAT=~a&QUERY=SELECT+*+FROM+~a.gaia_source+WHERE+1+=+CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',~a,~a,~a))+AND+phot_g_mean_mag+<+22.0" 
+			       tap-url catalog-release export-format rectacension declination radius)))
     (format t "Downloading Catalog ... ")
     (download-catalog-ffi download-link output-filename))
   (format t "[DONE]~%"))

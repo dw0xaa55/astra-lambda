@@ -66,6 +66,35 @@ Catalog Management:
                y-maximum)                 ;; creates a selection list of the specified area to be used with a catalog
 #+END_SRC
 
+Example: Downloading Catalog
+#+BEGIN_SRC common-lisp
+  ;; inputs for the function: download-catalog for the Messier 4 globular cluster
+
+  ;; tap-url         :: https://gea.esac.esa.int/tap-server/tap/
+  ;; catalog-release :: gaiadr2
+  ;; rectacension    ::  245.9
+  ;; declination     :: -26.5
+  ;; radius          ::  0.15
+  ;; format          ::  csv
+
+  (astra-lambda:download-catalog "https://gea.esac.esa.int/tap-server/tap/"
+                                 "gaiadr2"
+                                 245.9
+                                 -26.5
+                                 0.15
+                                 "csv"
+                                 "./m4.csv")
+#+END_SRC
+
+This will download the catalog data from the Gaia mission (data release 2) of the M4 globular cluster in a 0.15' (minutes) cone as a csv (you can also use tsv) file and save it as m4.csv utilizing the following  SQL-Query:
+
+#+BEGIN_SRC sql
+  SELECT *
+  FROM gaiadr2.gaia_source
+  WHERE 1 = CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',245.89675,-26.52575,0.5))
+  AND phot_g_mean_mag < 22.0
+#+END_SRC
+
 ** Installation
 Clone this repository to your quicklisp installation folder and load it via (ql:quickload "astra-lambda")
 Just to be on the save side, go into the src/libcatload folder and rebuild the library.
