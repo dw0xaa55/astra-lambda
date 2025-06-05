@@ -96,6 +96,62 @@ This will download the catalog data from the Gaia mission (data release 2) of th
   AND phot_g_mean_mag < 22.0
 #+END_SRC
 
+Orbital Mechanics Functions
+#+BEGIN_SRC common-lisp
+  (2d-vector-magnitude input-vector)                     ;; returns the magnitude of a vector represented by a list
+
+  (orbit-µ parent-body-mass)                             ;; returns the standard gravitational parameter from the parent body mass
+
+  (orbit-h position-vector                               ;; returns the specific angular momentum
+  	 velocity-vector)
+
+  (orbit-p specific-angular-momentum                      ;; returns the semi latus rectum
+  	 standard-gravitational-parameter)
+
+  (orbit-epsilon velocity-magnitude                       ;; returns the specific orbital energy
+  	       distance-to-planet
+  	       standard-gravitational-parameter)
+
+  (orbit-hyperbolic-a standard-gravitational-parameter    ;; returns the semi major axis in a hyperbolic orbit
+  		    specific-orbital-energy)
+
+  (orbit-a apoapsis-distance                              ;; returns the semi major axis in a eliptical orbit
+  	 periapsis-distance)
+
+  (orbit-e-vector position-vector                         ;; returns a the eccentricity vector from position- and velocity vectors
+  		standard-gravitational-parameter)
+
+  (orbit-e-from-vector eccentricity-vector)               ;; returns the eccentricity from the eccentricity vector
+
+  (orbit-omega eccentricity-vector)                       ;; returns the argument of periapsis
+
+  (orbit-v-radial velocity-vector                         ;; returns the radial velocity from the velocity- and position vectors
+  		position-vector)
+
+  (orbit-true-anomaly semi-latus-rectum                   ;; returns the true anomaly
+  		    position-vector
+  		    eccentricity
+  		    radial-velocity)
+    
+  (orbit-hyperbolic-anomaly eccentricity                  ;; returns the hyperbolic anomaly
+  			  true-anomaly)
+
+  (orbit-hyperbolic-ttrp semi-major-axis                  ;; returns the time to periapsis in seconds
+  		       standard-gravitational-parameter
+  		       eccentricity
+  		       hyperbolic-anomaly)
+
+  (orbit-r-periapsis semi-latus-rectum                    ;; returns the height of the periapsis in m from the gravity source.
+  		   eccentricity)
+
+  (orbit-v-periapsis standard-gravitational-parameter     ;; returns the velocity at periapsis in m/s
+  		   height-of-periapsis
+  		   semi-major-axis)
+
+  (orbit-v-ciruclar standard-gravitational-parameter      ;; returns the velocity of a circular orbit in m/s with an eccentricity of 0.0
+  		  height-of-target-orbit)
+#+END_SRC
+
 ** Installation
 Clone this repository to your quicklisp installation folder and load it via (ql:quickload "astra-lambda")
 Just to be on the save side, go into the src/libcatload folder and rebuild the library.
@@ -110,8 +166,8 @@ $ sbcl
 #+END_SRC
 
 ** Project TODO
+- [-] add functions for orbital mechanics 
 - [ ] make a list with coordinates of common astronomical objects
-- [ ] add functions for orbital mechanics (though maybe this would be better fit as another project?)
 - [ ] get rid of the download-catalog-ffi and translate it to LISP completely
 
 ** Author
