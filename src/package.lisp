@@ -20,7 +20,27 @@
    #:get-catalog-data-from-field
    #:isolate-data
    #:select-data
+   #:2d-vector-magnitude
+   #:orbit-µ
+   #:orbit-h
+   #:orbit-p
+   #:orbit-epsilon
+   #:orbit-hyperbolic-a
+   #:orbit-a
+   #:orbit-e-vector
+   #:orbit-e-from-vector
+   #:orbit-omega
+   #:orbit-v-radial
+   #:orbit-true-anomaly
+   #:orbit-hyperbolic-anomaly
+   #:orbit-hyperbolic-ttrp
+   #:orbit-r-periapsis
+   #:orbit-v-periapsis
+   #:orbit-v-ciruclar
    #:+AU+
    #:+LY+
    #:+PC+
-   #:+C+))
+   #:+C+
+   #:+G+))
+
+ 
