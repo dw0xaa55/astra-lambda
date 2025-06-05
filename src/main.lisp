@@ -3,10 +3,11 @@
 ;;;-------------------------------------------------------------------------------------------------
 ;;; constant variables (metric)
 ;;;-------------------------------------------------------------------------------------------------
-(defparameter +AU+ 149597871000)      ; meters
-(defparameter +LY+ 9460730472580000)  ; meters
-(defparameter +PC+ 30856775814913673) ; meters
-(defparameter +C+  299792458)         ; meters/sec
+(defparameter +AU+ 149597871000 "one astronomical unit in meters")
+(defparameter +LY+ 9460730472580000 "one light year in meters")
+(defparameter +PC+ 30856775814913673 "one parsec in meters")
+(defparameter +C+  299792458 "the speed of light in meters per second")
+(defparameter +G+  6.674e11 "the gravitational constant")
 
 ;;;-------------------------------------------------------------------------------------------------
 ;;; equations
@@ -164,3 +165,109 @@
 		  (push nil selection)))
 	    x-values y-values)
     selection))
+
+;;;-------------------------------------------------------------------------------------------------
+;;; orbital mechanics 
+;;;-------------------------------------------------------------------------------------------------
+(defun 2d-vector-magnitude (input-vector)
+  "returns the magnitude of a vector represented by a list"
+  (sqrt (+ (* (first input-vector) (first input-vector))
+	   (* (second input-vector) (second input-vector)))))
+  
+(defun orbit-µ (parent-body-mass)
+  "returns the standard gravitational parameter from the parent body mass"
+  (* +G+ parent-body-mass))
+
+(defun orbit-h (position-vector velocity-vector)
+  "returns the specific angular momentum from the 2-dimensional position- and velocity vectors represented by lists"
+  (- (* (first position-vector) (second velocity-vector))
+     (* (second position-vector) (first velocity-vector))))
+
+(defun orbit-p (specific-angular-momentum standard-gravitational-parameter)
+  "returns the semi latus rectum"
+  (/ (* specific-angular-momentum specific-angular-momentum)
+     standard-gravitational-parameter))
+
+(defun orbit-epsilon (velocity-magnitude distance-to-planet standard-gravitational-parameter)
+  "returns the specific orbital energy"
+  (- (/ (* velocity-magnitude velocity-magnitude) 2)
+     (/ standard-gravitational-parameter distance-to-planet)))
+
+(defun orbit-hyperbolic-a (standard-gravitational-parameter specific-orbital-energy)
+  "returns the semi major axis in a hyperbolic orbit"
+  (* -1 (/ standard-gravitational-parameter
+	   (* 2 specific-orbital-energy))))
+
+(defun orbit-a (apoapsis-distance periapsis-distance)
+  "returns the semi major axis in a eliptical orbit"
+  (/ (+ apoapsis-distance periapsis-distance)
+     2))
+
+(defun orbit-e-vector (position-vector velocity-vector standard-gravitational-parameter)
+  "returns a list with the 2-dimensional eccentricity vector from 2-dimensional position- and velocity vectors represented by lists"
+  (let* ((eccentricity-x (/ (- (* (first position-vector)
+				  (- (* (2d-vector-magnitude velocity-vector) (2d-vector-magnitude velocity-vector))
+				     (/ standard-gravitational-parameter (2d-vector-magnitude position-vector))))
+			       (* (first velocity-vector)
+				  (+ (* (first position-vector) (first velocity-vector))
+				     (* (second position-vector) (second velocity-vector)))))
+			    standard-gravitational-parameter))
+	 (eccentricity-y (/ (- (* (second position-vector)
+				  (- (* (2d-vector-magnitude velocity-vector) (2d-vector-magnitude velocity-vector))
+				     (/ standard-gravitational-parameter (2d-vector-magnitude position-vector))))
+			       (* (second velocity-vector)
+				  (+ (* (first position-vector) (first velocity-vector))
+				     (* (second position-vector) (second velocity-vector)))))
+			    standard-gravitational-parameter)))
+    (list eccentricity-x eccentricity-y)))
+
+(defun orbit-e-from-vector (eccentricity-vector)
+  "returns the eccentricity from a known 2-dimensional eccentricity vector represented by a list"
+  (sqrt (+ (* (first eccentricity-vector) (first eccentricity-vector))
+	   (* (second eccentricity-vector) (second eccentricity-vector)))))
+
+(defun orbit-omega (eccentricity-vector)
+  "returns the argument of periapsis from a 2-dimensional eccentricity vector represented by a list"
+  (atan (second eccentricity-vector) (first eccentricity-vector)))
+
+(defun orbit-v-radial (velocity-vector position-vector)
+  "returns the radial velocity from the 2-dimensional velocity- and position vectors"
+  (/ (+ (* (first velocity-vector) (first position-vector))
+	(* (second velocity-vector) (second position-vector)))
+     (2d-vector-magnitude position-vector)))
+
+(defun orbit-true-anomaly (semi-latus-rectum position-vector eccentricity radial-velocity)
+  "returns the true anomaly. the 2-dimensional position vector is represented by a list"
+  (let ((f0 (acos (/ (- (/ semi-latus-rectum (2d-vector-magnitude position-vector)) 1) eccentricity))))
+    (if (< radial-velocity 0)
+	(* f0 -1)
+	f0)))
+
+(defun orbit-hyperbolic-anomaly (eccentricity true-anomaly)
+  "returns the hyperbolic anomaly"
+  (let ((F0 (acosh (/ (+ eccentricity (cos true-anomaly))
+		      (+ 1 (* eccentricity (cos true-anomaly)))))))
+    (if (< true-anomaly 0)
+	(* F0 -1)
+	F0)))
+
+(defun orbit-hyperbolic-ttrp (semi-major-axis standard-gravitational-parameter eccentricity hyperbolic-anomaly)
+  "returns the time to periapsis in seconds"
+  (* (sqrt (/ (* (abs semi-major-axis) (abs semi-major-axis) (abs semi-major-axis))
+	      standard-gravitational-parameter))
+     (- (* eccentricity (sinh hyperbolic-anomaly))
+	hyperbolic-anomaly)))
+
+(defun orbit-r-periapsis (semi-latus-rectum eccentricity)
+  "returns the height of the periapsis in m from the gravity source. Subtract the planet's radius for the height from the surface"
+  (/ semi-latus-rectum (+ 1 eccentricity)))
+
+(defun orbit-v-periapsis (standard-gravitational-parameter height-of-periapsis semi-major-axis)
+  "returns the velocity at periapsis in m/s"
+  (sqrt (* standard-gravitational-parameter
+	   (- (/ 2 height-of-periapsis)
+	      (/ 1 semi-major-axis)))))
+
+(defun orbit-v-ciruclar (standard-gravitational-parameter height-of-target-orbit)
+  "returns the velocity of a circular orbit in m/s with an eccentricity of 0.0"
+  (sqrt (/ standard-gravitational-parameter height-of-target-orbit)))
