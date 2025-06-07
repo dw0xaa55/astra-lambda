@@ -13,6 +13,7 @@ Constant variables:
 +LY+                                                       ;; 1 light year in meters
 +PC+                                                       ;; 1 parsec in meters
 +c+                                                        ;; the speed of light in meters per second
++G+                                                        ;; gravitational constant
 #+END_SRC
 
 Equation Functions:
